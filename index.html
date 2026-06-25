@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>POS Professional – Modern Point of Sale System</title>
+  <meta name="description" content="Enterprise-grade POS System with Firebase, role-based access, real-time inventory, and advanced analytics.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/theme.css">
+  <link rel="stylesheet" href="assets/css/base.css">
+  <link rel="stylesheet" href="assets/css/components.css">
+  <link rel="stylesheet" href="assets/css/landing.css">
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
+
+  <script src="../firebase/firebase-config.js"></script> 
+</head>
+<body>
+
+<!-- Navigation -->
+<nav class="landing-nav" id="landing-nav" role="navigation" aria-label="Main navigation">
+  <div class="nav-brand">
+    <div class="nav-brand-icon" aria-hidden="true">₱</div>
+    <div>
+      <div class="nav-brand-text">POS Professional</div>
+      <small class="nav-brand-sub">Enterprise Retail Solution</small>
+    </div>
+  </div>
+  <div class="nav-links" role="list">
+    <a href="#features" role="listitem">Features</a>
+    <a href="#how-it-works" role="listitem">How It Works</a>
+    <a href="#roles" role="listitem">User Roles</a>
+    <a href="#faq" role="listitem">FAQ</a>
+    <a href="#contact" role="listitem">Contact</a>
+  </div>
+  <div class="nav-cta">
+    <a href="pages/login.html" class="btn btn-primary btn-sm">Get Started</a>
+  </div>
+</nav>
+
+<main>
+<!-- Hero -->
+<section class="hero" aria-labelledby="hero-heading">
+  <div class="hero-text">
+    <div class="hero-badge" aria-label="Live status">Firebase Realtime Sync</div>
+    <h1 id="hero-heading" class="hero-title">
+      The Smart <span class="highlight">POS System</span><br>for Modern Retail
+    </h1>
+    <p class="hero-desc">
+      Streamline your checkout, manage inventory in real-time, and gain deep sales insights — all powered by Firebase and built for teams.
+    </p>
+    <div class="hero-actions">
+      <a href="pages/login.html" class="btn btn-primary btn-lg">Launch App</a>
+      <a href="#features" class="btn btn-secondary btn-lg">Explore Features</a>
+    </div>
+    <div class="hero-stats" role="list">
+      <div class="hero-stat" role="listitem"><strong>Real-Time</strong><span>Firebase Database</span></div>
+      <div class="hero-stat" role="listitem"><strong>3 Roles</strong><span>Admin · Manager · Cashier</span></div>
+      <div class="hero-stat" role="listitem"><strong>Analytics</strong><span>Daily / Monthly / Yearly</span></div>
+    </div>
+  </div>
+  <div class="hero-visual" aria-hidden="true">
+    <div class="hero-dashboard-preview">
+      <div class="preview-topbar">
+        <div class="preview-dot"></div><div class="preview-dot"></div><div class="preview-dot"></div>
+        <span class="preview-title">Dashboard Overview</span>
+      </div>
+      <div class="preview-kpis">
+        <div class="preview-kpi"><div class="preview-kpi-label">Total Sales</div><div class="preview-kpi-val">₱45,230</div></div>
+        <div class="preview-kpi"><div class="preview-kpi-label">Today</div><div class="preview-kpi-val">₱3,450</div></div>
+        <div class="preview-kpi"><div class="preview-kpi-label">Products</div><div class="preview-kpi-val">128</div></div>
+        <div class="preview-kpi"><div class="preview-kpi-label">Low Stock</div><div class="preview-kpi-val">3 ⚠</div></div>
+      </div>
+      <div class="preview-chart">
+        <div class="bar" style="height:35%"></div><div class="bar" style="height:55%"></div>
+        <div class="bar" style="height:40%"></div><div class="bar" style="height:70%"></div>
+        <div class="bar" style="height:60%"></div><div class="bar" style="height:85%"></div>
+        <div class="bar" style="height:75%"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Features -->
+<section id="features" class="landing-section" aria-labelledby="features-heading">
+  <div class="section-label">Features</div>
+  <h2 id="features-heading" class="section-heading">Everything You Need to Run a Retail Business</h2>
+  <p class="section-subtext">From checkout to analytics, every tool is purpose-built for efficiency and reliability.</p>
+  <div class="features-grid">
+    <article class="feature-card">
+      <div class="feature-icon-wrap" aria-hidden="true">⚡</div>
+      <h3>Fast POS Checkout</h3>
+      <p>Search products, adjust quantities, apply discounts, and process payments in seconds with our streamlined cart interface.</p>
+    </article>
+    <article class="feature-card">
+      <div class="feature-icon-wrap" aria-hidden="true">📦</div>
+      <h3>Real-Time Inventory</h3>
+      <p>Inventory updates automatically on every sale. Get low-stock alerts before you run out and track every unit.</p>
+    </article>
+    <article class="feature-card">
+      <div class="feature-icon-wrap" aria-hidden="true">📊</div>
+      <h3>Advanced Analytics</h3>
+      <p>Daily, weekly, monthly, and yearly reports. Best sellers, revenue trends, payment methods, and inventory performance.</p>
+    </article>
+    <article class="feature-card">
+      <div class="feature-icon-wrap" aria-hidden="true">👥</div>
+      <h3>User Management</h3>
+      <p>Admins can create, edit, disable, and reset passwords for any user. Full control over who accesses what.</p>
+    </article>
+    <article class="feature-card">
+      <div class="feature-icon-wrap" aria-hidden="true">🔐</div>
+      <h3>Role-Based Access</h3>
+      <p>Strict permission tiers for Admin, Manager, and Cashier. No role can access what they shouldn't.</p>
+    </article>
+    <article class="feature-card">
+      <div class="feature-icon-wrap" aria-hidden="true">☁️</div>
+      <h3>Firebase Cloud</h3>
+      <p>All data lives in Firebase Realtime Database. Every change syncs instantly across all connected devices.</p>
+    </article>
+    <article class="feature-card">
+      <div class="feature-icon-wrap" aria-hidden="true">🧾</div>
+      <h3>Receipt Generator</h3>
+      <p>Auto-generate and print detailed receipts for every completed transaction. Itemized, professional, instant.</p>
+    </article>
+    <article class="feature-card">
+      <div class="feature-icon-wrap" aria-hidden="true">🌙</div>
+      <h3>Dark / Light Mode</h3>
+      <p>Built-in theme toggle. Work comfortably in any lighting condition — day or night shift.</p>
+    </article>
+    <article class="feature-card">
+      <div class="feature-icon-wrap" aria-hidden="true">📱</div>
+      <h3>Fully Responsive</h3>
+      <p>Works on desktop, tablet, and mobile. Take your POS anywhere — no native app required.</p>
+    </article>
+  </div>
+</section>
+
+<!-- How It Works -->
+<section id="how-it-works" class="landing-section" style="background:var(--clr-surface-2); max-width:100%; padding: 80px 40px;" aria-labelledby="workflow-heading">
+  <div style="max-width:1200px;margin:0 auto;">
+    <div class="section-label">Workflow</div>
+    <h2 id="workflow-heading" class="section-heading">How POS Professional Works</h2>
+    <p class="section-subtext">A simple 5-step workflow from login to insights.</p>
+    <div class="workflow" role="list">
+      <div class="workflow-step" role="listitem"><div class="workflow-num">1</div><h4>Login Securely</h4><p>Firebase Authentication with email &amp; password</p></div>
+      <div class="workflow-arrow" aria-hidden="true">→</div>
+      <div class="workflow-step" role="listitem"><div class="workflow-num">2</div><h4>Manage Products</h4><p>Add items, set prices, upload photos</p></div>
+      <div class="workflow-arrow" aria-hidden="true">→</div>
+      <div class="workflow-step" role="listitem"><div class="workflow-num">3</div><h4>Process Sales</h4><p>Cart, discount, checkout, receipt</p></div>
+      <div class="workflow-arrow" aria-hidden="true">→</div>
+      <div class="workflow-step" role="listitem"><div class="workflow-num">4</div><h4>Auto-Update Stock</h4><p>Inventory deducted on every sale</p></div>
+      <div class="workflow-arrow" aria-hidden="true">→</div>
+      <div class="workflow-step" role="listitem"><div class="workflow-num">5</div><h4>View Analytics</h4><p>Revenue, trends, best sellers</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- User Roles -->
+<section id="roles" class="landing-section" aria-labelledby="roles-heading">
+  <div class="section-label">Access Control</div>
+  <h2 id="roles-heading" class="section-heading">Flexible User Roles &amp; Permissions</h2>
+  <p class="section-subtext">Each role gets exactly the access it needs — no more, no less.</p>
+  <div class="roles-grid">
+    <div class="role-card">
+      <div class="role-icon" aria-hidden="true">💳</div>
+      <h3>Cashier</h3>
+      <p class="role-sub">Front-line sales staff</p>
+      <div class="perm-list" role="list">
+        <div class="perm-item allow" role="listitem"><div class="dot"></div>Process sales &amp; checkout</div>
+        <div class="perm-item allow" role="listitem"><div class="dot"></div>View product catalog</div>
+        <div class="perm-item allow" role="listitem"><div class="dot"></div>View own profile</div>
+        <div class="perm-item deny"  role="listitem"><div class="dot"></div>No analytics access</div>
+        <div class="perm-item deny"  role="listitem"><div class="dot"></div>No product management</div>
+        <div class="perm-item deny"  role="listitem"><div class="dot"></div>No admin settings</div>
+      </div>
+    </div>
+    <div class="role-card featured">
+      <div class="role-badge-featured">Most Used</div>
+      <div class="role-icon" aria-hidden="true">📋</div>
+      <h3>Manager</h3>
+      <p class="role-sub">Store operations lead</p>
+      <div class="perm-list" role="list">
+        <div class="perm-item allow" role="listitem"><div class="dot"></div>Full sales &amp; dashboard</div>
+        <div class="perm-item allow" role="listitem"><div class="dot"></div>Add &amp; edit products</div>
+        <div class="perm-item allow" role="listitem"><div class="dot"></div>Manage inventory</div>
+        <div class="perm-item allow" role="listitem"><div class="dot"></div>View all analytics</div>
+        <div class="perm-item deny"  role="listitem"><div class="dot"></div>No user management</div>
+        <div class="perm-item deny"  role="listitem"><div class="dot"></div>No system settings</div>
+      </div>
+    </div>
+    <div class="role-card">
+      <div class="role-icon" aria-hidden="true">👔</div>
+      <h3>Admin</h3>
+      <p class="role-sub">Full system control</p>
+      <div class="perm-list" role="list">
+        <div class="perm-item allow" role="listitem"><div class="dot"></div>All manager permissions</div>
+        <div class="perm-item allow" role="listitem"><div class="dot"></div>Create &amp; manage users</div>
+        <div class="perm-item allow" role="listitem"><div class="dot"></div>Delete products</div>
+        <div class="perm-item allow" role="listitem"><div class="dot"></div>Manage employees</div>
+        <div class="perm-item allow" role="listitem"><div class="dot"></div>System settings</div>
+        <div class="perm-item allow" role="listitem"><div class="dot"></div>Activity &amp; audit logs</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section id="faq" class="landing-section" style="background:var(--clr-surface-2); max-width:100%; padding:80px 40px;" aria-labelledby="faq-heading">
+  <div style="max-width:1200px;margin:0 auto;">
+    <div class="section-label">FAQ</div>
+    <h2 id="faq-heading" class="section-heading">Frequently Asked Questions</h2>
+    <div class="faq-list">
+      <div class="faq-item">
+        <div class="faq-q" role="button" tabindex="0" aria-expanded="false">What database does this use? <span class="arrow" aria-hidden="true">▾</span></div>
+        <div class="faq-a" role="region"><p>Firebase Realtime Database hosted at <code>pos-electives-default-rtdb.firebaseio.com</code>. All reads and writes go directly to Firebase — no local storage, no mock data.</p></div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" role="button" tabindex="0" aria-expanded="false">How does authentication work? <span class="arrow" aria-hidden="true">▾</span></div>
+        <div class="faq-a" role="region"><p>Firebase Email/Password Authentication. The admin account is created automatically on first run. Passwords are handled entirely by Firebase — never stored in plain text.</p></div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" role="button" tabindex="0" aria-expanded="false">Can multiple users log in simultaneously? <span class="arrow" aria-hidden="true">▾</span></div>
+        <div class="faq-a" role="region"><p>Yes. Firebase Realtime Database supports concurrent connections. All changes sync instantly across all sessions.</p></div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" role="button" tabindex="0" aria-expanded="false">Does this system calculate tax? <span class="arrow" aria-hidden="true">▾</span></div>
+        <div class="faq-a" role="region"><p>No. By design, this POS system does not calculate tax. The formula is: <strong>Total = (Price × Quantity) − Discount</strong>.</p></div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" role="button" tabindex="0" aria-expanded="false">How do I create new user accounts? <span class="arrow" aria-hidden="true">▾</span></div>
+        <div class="faq-a" role="region"><p>Log in as Admin → Settings → User Management. You can create, edit, disable, and reset passwords for any account from there.</p></div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" role="button" tabindex="0" aria-expanded="false">Is the system mobile-friendly? <span class="arrow" aria-hidden="true">▾</span></div>
+        <div class="faq-a" role="region"><p>Yes. The entire interface is fully responsive. The sidebar collapses on mobile and all layouts stack gracefully for smaller screens.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Contact -->
+<section id="contact" class="landing-section" aria-labelledby="contact-heading">
+  <div class="section-label">Contact</div>
+  <h2 id="contact-heading" class="section-heading">Get in Touch</h2>
+  <div class="grid grid-4" style="margin-top:var(--gap-xl);">
+    <div class="card card-sm text-center"><div style="font-size:1.8rem;margin-bottom:var(--gap-sm)" aria-hidden="true">📧</div><strong>Email</strong><p style="font-size:.85rem;color:var(--clr-text-muted);margin-top:4px">support@posprofessional.com</p></div>
+    <div class="card card-sm text-center"><div style="font-size:1.8rem;margin-bottom:var(--gap-sm)" aria-hidden="true">📱</div><strong>Phone</strong><p style="font-size:.85rem;color:var(--clr-text-muted);margin-top:4px">+63 912 345 6789</p></div>
+    <div class="card card-sm text-center"><div style="font-size:1.8rem;margin-bottom:var(--gap-sm)" aria-hidden="true">📍</div><strong>Address</strong><p style="font-size:.85rem;color:var(--clr-text-muted);margin-top:4px">123 Commerce St., Manila</p></div>
+    <div class="card card-sm text-center"><div style="font-size:1.8rem;margin-bottom:var(--gap-sm)" aria-hidden="true">🌐</div><strong>Social</strong><p style="font-size:.85rem;color:var(--clr-text-muted);margin-top:4px">Facebook · Twitter · LinkedIn</p></div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section" aria-labelledby="cta-heading">
+  <h2 id="cta-heading">Ready to Modernize Your Retail Operations?</h2>
+  <p>Start using POS Professional today. No installation required.</p>
+  <a href="pages/login.html" class="btn-cta" role="button">Launch POS System →</a>
+</section>
+</main>
+
+<!-- Footer -->
+<footer class="landing-footer" role="contentinfo">
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <div class="nav-brand" style="margin-bottom:var(--gap-md);">
+        <div class="nav-brand-icon">₱</div>
+        <div><div class="nav-brand-text" style="color:#fff;">POS Professional</div></div>
+      </div>
+      <p>A production-grade Point of Sale system built with HTML, CSS, JavaScript, and Firebase Realtime Database.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Platform</h4>
+      <a href="#features">Features</a>
+      <a href="#how-it-works">How It Works</a>
+      <a href="#roles">User Roles</a>
+    </div>
+    <div class="footer-col">
+      <h4>Support</h4>
+      <a href="#faq">FAQ</a>
+      <a href="#contact">Contact</a>
+    </div>
+    <div class="footer-col">
+      <h4>Access</h4>
+      <a href="pages/login.html">Sign In →</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2026 POS Professional. All rights reserved.</p>
+  </div>
+</footer>
+
+<div id="toast-container" class="toast-container" aria-live="polite"></div>
+
+<script>
+// Nav scroll effect
+window.addEventListener('scroll', () => {
+  document.getElementById('landing-nav').classList.toggle('scrolled', window.scrollY > 20);
+});
+
+// FAQ accordion
+document.querySelectorAll('.faq-q').forEach(q => {
+  q.addEventListener('click', () => {
+    const item = q.parentElement;
+    const isOpen = item.classList.contains('open');
+    document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+    if (!isOpen) item.classList.add('open');
+    q.setAttribute('aria-expanded', !isOpen);
+  });
+  q.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); q.click(); } });
+});
+
+// Smooth scrolling
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => {
+    e.preventDefault();
+    const el = document.querySelector(a.getAttribute('href'));
+    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+});
+
+// Animated bars on scroll
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.querySelectorAll('.bar').forEach((b, i) => {
+        setTimeout(() => { b.style.height = b.style.height || (30 + Math.random() * 70) + '%'; }, i * 80);
+      });
+    }
+  });
+}, { threshold: 0.3 });
+const heroVisual = document.querySelector('.hero-visual');
+if (heroVisual) observer.observe(heroVisual);
+</script>
+</body>
+</html>

@@ -1,0 +1,62 @@
+/* =============================================================
+   POS Professional – Settings Page
+   ============================================================= */
+
+.settings-layout { display: grid; grid-template-columns: 220px 1fr; gap: var(--gap-lg); }
+
+.settings-nav {
+  background: var(--clr-surface); border: 1px solid var(--clr-border);
+  border-radius: var(--radius-lg); padding: var(--gap-md);
+  height: fit-content; position: sticky; top: 80px;
+}
+.settings-nav-item {
+  display: flex; align-items: center; gap: var(--gap-md); padding: 10px var(--gap-md);
+  border-radius: var(--radius-md); font-size: .875rem; font-weight: 500;
+  color: var(--clr-text-muted); cursor: pointer; transition: all var(--transition); margin-bottom: 2px;
+}
+.settings-nav-item:hover { background: var(--clr-surface-2); color: var(--clr-text); }
+.settings-nav-item.active { background: var(--clr-primary-light); color: var(--clr-primary); font-weight: 600; }
+
+.settings-main { min-width: 0; }
+.settings-panel { display: none; }
+.settings-panel.active { display: block; }
+
+/* ── Users Table Actions ─────────────────────────────────── */
+.user-role-select {
+  padding: 4px 8px; border: 1px solid var(--clr-border); border-radius: var(--radius-sm);
+  font-size: .8rem; background: var(--clr-surface);
+}
+
+/* ── Danger Zone ─────────────────────────────────────────── */
+.danger-zone {
+  border: 1px solid var(--clr-danger); border-radius: var(--radius-lg);
+  padding: var(--gap-lg);
+}
+.danger-zone-header { color: var(--clr-danger); font-weight: 700; margin-bottom: var(--gap-md); }
+
+/* ── Theme Toggle ────────────────────────────────────────── */
+.theme-toggle-row {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: var(--gap-md) 0; border-bottom: 1px solid var(--clr-border);
+}
+.toggle-switch {
+  position: relative; width: 48px; height: 26px;
+}
+.toggle-switch input { opacity: 0; width: 0; height: 0; }
+.toggle-slider {
+  position: absolute; inset: 0; background: var(--clr-border); border-radius: 13px;
+  cursor: pointer; transition: .2s;
+}
+.toggle-slider::before {
+  content: ''; position: absolute; width: 20px; height: 20px;
+  left: 3px; top: 3px; background: #fff; border-radius: 50%; transition: .2s;
+}
+.toggle-switch input:checked + .toggle-slider { background: var(--clr-primary); }
+.toggle-switch input:checked + .toggle-slider::before { transform: translateX(22px); }
+
+@media (max-width: 768px) {
+  .settings-layout { grid-template-columns: 1fr; }
+  .settings-nav { position: static; }
+  .settings-nav { display: flex; flex-wrap: wrap; gap: 4px; }
+  .settings-nav-item { flex: 1; min-width: 120px; }
+}

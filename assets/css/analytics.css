@@ -1,0 +1,81 @@
+/* =============================================================
+   POS Professional – Analytics Page
+   ============================================================= */
+
+.analytics-kpis {
+  display: grid; grid-template-columns: repeat(4, 1fr);
+  gap: var(--gap-md); margin-bottom: var(--gap-lg);
+}
+
+.analytics-row { display: grid; grid-template-columns: 1fr 1fr; gap: var(--gap-lg); margin-bottom: var(--gap-lg); }
+.analytics-row-3 { display: grid; grid-template-columns: repeat(3,1fr); gap: var(--gap-lg); margin-bottom: var(--gap-lg); }
+
+/* ── Summary List ────────────────────────────────────────── */
+.summary-list { display: flex; flex-direction: column; gap: var(--gap-sm); }
+.summary-item {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: var(--gap-sm) 0; border-bottom: 1px solid var(--clr-border); font-size: .875rem;
+}
+.summary-item:last-child { border-bottom: none; }
+.summary-item-label { color: var(--clr-text-muted); }
+.summary-item-val { font-weight: 700; }
+
+/* ── Bar Chart (pure CSS) ────────────────────────────────── */
+.bar-chart { display: flex; align-items: flex-end; gap: 6px; height: 140px; padding: var(--gap-sm) 0; }
+.bar-col { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 4px; }
+.bar-fill {
+  width: 100%; border-radius: 4px 4px 0 0; min-height: 4px;
+  background: linear-gradient(to top, var(--clr-primary), #7c3aed);
+  transition: height .6s ease;
+}
+.bar-label { font-size: .65rem; color: var(--clr-text-muted); text-align: center; white-space: nowrap; }
+
+/* ── Top Products ────────────────────────────────────────── */
+.top-products-list { display: flex; flex-direction: column; gap: var(--gap-sm); }
+.top-product-item { display: flex; align-items: center; gap: var(--gap-md); padding: var(--gap-sm) 0; }
+.top-product-rank {
+  width: 28px; height: 28px; border-radius: var(--radius-sm);
+  background: var(--clr-primary-light); color: var(--clr-primary);
+  display: flex; align-items: center; justify-content: center;
+  font-size: .8rem; font-weight: 800; flex-shrink: 0;
+}
+.top-product-name { flex: 1; font-size: .875rem; font-weight: 600; }
+.top-product-stats { text-align: right; }
+.top-product-qty { font-size: .85rem; font-weight: 700; }
+.top-product-rev { font-size: .75rem; color: var(--clr-text-muted); }
+.top-product-bar { flex: 2; height: 6px; background: var(--clr-border); border-radius: 3px; overflow: hidden; }
+.top-product-bar-fill { height: 100%; background: var(--clr-primary); border-radius: 3px; }
+
+/* ── Payment Methods ─────────────────────────────────────── */
+.payment-method-list { display: flex; flex-direction: column; gap: var(--gap-md); }
+.payment-method-item { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: var(--gap-md); }
+.pm-icon { font-size: 1.2rem; width: 32px; text-align: center; }
+.pm-bar-wrap { display: flex; flex-direction: column; gap: 3px; }
+.pm-name { font-size: .82rem; font-weight: 600; }
+.pm-bar-outer { height: 6px; background: var(--clr-border); border-radius: 3px; overflow: hidden; }
+.pm-bar-inner { height: 100%; border-radius: 3px; background: var(--clr-accent); }
+.pm-pct { font-size: .8rem; font-weight: 700; color: var(--clr-text-muted); }
+
+/* ── Inventory Performance ───────────────────────────────── */
+.inventory-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--gap-md); margin-bottom: var(--gap-lg); }
+.inv-metric { text-align: center; padding: var(--gap-md); border-radius: var(--radius-md); border: 1px solid var(--clr-border); }
+.inv-metric-num { font-size: 2rem; font-weight: 900; }
+.inv-metric-label { font-size: .8rem; color: var(--clr-text-muted); margin-top: 4px; }
+
+/* ── Export / Filter Controls ────────────────────────────── */
+.analytics-controls {
+  display: flex; align-items: center; gap: var(--gap-md); flex-wrap: wrap;
+  margin-bottom: var(--gap-lg);
+}
+.date-range { display: flex; align-items: center; gap: var(--gap-sm); font-size: .875rem; }
+
+@media (max-width: 1024px) {
+  .analytics-kpis { grid-template-columns: repeat(2, 1fr); }
+  .analytics-row { grid-template-columns: 1fr; }
+  .analytics-row-3 { grid-template-columns: 1fr; }
+  .inventory-grid { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 600px) {
+  .analytics-kpis { grid-template-columns: 1fr 1fr; }
+  .inventory-grid { grid-template-columns: 1fr; }
+}

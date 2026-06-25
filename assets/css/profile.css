@@ -1,0 +1,72 @@
+/* =============================================================
+   POS Professional – Profile Page
+   ============================================================= */
+
+.profile-layout { display: grid; grid-template-columns: 280px 1fr; gap: var(--gap-lg); }
+
+/* ── Profile Sidebar ─────────────────────────────────────── */
+.profile-sidebar { display: flex; flex-direction: column; gap: var(--gap-md); }
+.profile-card {
+  background: var(--clr-surface); border: 1px solid var(--clr-border);
+  border-radius: var(--radius-lg); padding: var(--gap-lg); text-align: center;
+}
+.profile-avatar-wrap { position: relative; display: inline-block; margin-bottom: var(--gap-md); }
+.profile-avatar {
+  width: 80px; height: 80px; border-radius: 50%;
+  background: linear-gradient(135deg, var(--clr-primary), #7c3aed);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 2rem; font-weight: 800; color: #fff; margin: 0 auto;
+}
+.profile-name { font-size: 1.1rem; font-weight: 800; margin-bottom: 4px; }
+.profile-email { font-size: .8rem; color: var(--clr-text-muted); }
+.profile-role-badge {
+  display: inline-block; margin-top: var(--gap-sm);
+  padding: 4px 12px; border-radius: var(--radius-full);
+  font-size: .72rem; font-weight: 700; text-transform: uppercase; letter-spacing: .06em;
+}
+.profile-nav { display: flex; flex-direction: column; gap: 2px; }
+.profile-nav-item {
+  display: flex; align-items: center; gap: var(--gap-md); padding: 10px var(--gap-md);
+  border-radius: var(--radius-md); font-size: .875rem; font-weight: 500;
+  color: var(--clr-text-muted); cursor: pointer; transition: all var(--transition);
+}
+.profile-nav-item:hover { background: var(--clr-surface-2); color: var(--clr-text); }
+.profile-nav-item.active { background: var(--clr-primary-light); color: var(--clr-primary); font-weight: 600; }
+.profile-nav-item .nav-icon { font-size: 1rem; }
+
+/* ── Profile Main ────────────────────────────────────────── */
+.profile-main { min-width: 0; }
+.profile-panel { display: none; }
+.profile-panel.active { display: block; }
+
+/* ── Product Table ───────────────────────────────────────── */
+.product-img-thumb {
+  width: 36px; height: 36px; border-radius: var(--radius-sm);
+  background: var(--clr-primary-light); display: flex; align-items: center; justify-content: center;
+  font-size: 1.2rem;
+}
+.product-actions { display: flex; gap: 4px; }
+
+/* ── Inventory Editor ────────────────────────────────────── */
+.inventory-editor-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--gap-lg); }
+.qty-editor {
+  display: flex; align-items: center; gap: var(--gap-sm);
+  padding: var(--gap-md); background: var(--clr-surface-2); border-radius: var(--radius-md);
+  border: 1px solid var(--clr-border);
+}
+.qty-editor .qty-display { font-size: 1.4rem; font-weight: 800; min-width: 60px; text-align: center; }
+.qty-editor-actions { display: flex; gap: var(--gap-sm); margin-top: var(--gap-md); }
+
+/* ── Password Change ─────────────────────────────────────── */
+.password-strength { height: 4px; border-radius: 2px; background: var(--clr-border); margin-top: 4px; overflow: hidden; }
+.password-strength-bar { height: 100%; border-radius: 2px; transition: width .3s ease; }
+.pw-weak   { background: var(--clr-danger); }
+.pw-medium { background: var(--clr-warning); }
+.pw-strong { background: var(--clr-success); }
+
+@media (max-width: 900px) {
+  .profile-layout { grid-template-columns: 1fr; }
+  .profile-sidebar { flex-direction: row; flex-wrap: wrap; }
+  .profile-nav { flex-direction: row; flex-wrap: wrap; }
+  .inventory-editor-grid { grid-template-columns: 1fr; }
+}

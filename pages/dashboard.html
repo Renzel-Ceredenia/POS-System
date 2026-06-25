@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard – POS Professional</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/css/theme.css">
+  <link rel="stylesheet" href="../assets/css/base.css">
+  <link rel="stylesheet" href="../assets/css/components.css">
+  <link rel="stylesheet" href="../assets/css/layout.css">
+  <link rel="stylesheet" href="../assets/css/dashboard.css">
+</head>
+<body>
+<div class="app-shell">
+
+  <!-- Sidebar -->
+  <aside class="sidebar" role="navigation" aria-label="Main navigation">
+    <div class="sidebar-logo">
+      <div class="sidebar-logo-icon" aria-hidden="true">₱</div>
+      <div class="sidebar-logo-text"><span>POS Professional</span><small>Enterprise POS</small></div>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="sidebar-nav-section">
+        <div class="sidebar-nav-label">Main</div>
+        <a href="dashboard.html" class="nav-item active" id="nav-dashboard" aria-current="page">
+          <span class="nav-icon" aria-hidden="true">📊</span> Dashboard
+        </a>
+        <a href="sales.html" class="nav-item" id="nav-sales">
+          <span class="nav-icon" aria-hidden="true">🛒</span> Sales / POS
+        </a>
+        <a href="analytics.html" class="nav-item" id="nav-analytics">
+          <span class="nav-icon" aria-hidden="true">📈</span> Analytics
+        </a>
+      </div>
+      <div class="sidebar-nav-section">
+        <div class="sidebar-nav-label">Account</div>
+        <a href="profile.html" class="nav-item" id="nav-profile">
+          <span class="nav-icon" aria-hidden="true">👤</span> Profile
+        </a>
+        <a href="settings.html" class="nav-item" id="nav-settings">
+          <span class="nav-icon" aria-hidden="true">⚙️</span> Settings
+        </a>
+      </div>
+    </nav>
+    <div class="sidebar-user">
+      <div class="sidebar-avatar" id="sidebar-user-initials" aria-hidden="true">U</div>
+      <div class="sidebar-user-info">
+        <div class="sidebar-user-name" id="sidebar-user-name">Loading...</div>
+        <div class="sidebar-user-role" id="sidebar-user-role">—</div>
+      </div>
+      <button class="sidebar-logout-btn" onclick="handleLogout()" title="Logout" aria-label="Logout">🚪</button>
+    </div>
+  </aside>
+  <div class="sidebar-overlay"></div>
+
+  <!-- Main -->
+  <main class="main-content" role="main">
+    <header class="topbar">
+      <div class="topbar-left">
+        <button class="menu-toggle" aria-label="Toggle sidebar">☰</button>
+        <h1 class="topbar-title">Dashboard</h1>
+      </div>
+      <div class="topbar-right">
+        <span class="topbar-time" id="topbar-time" aria-live="off"></span>
+        <button class="btn btn-ghost btn-icon" id="theme-toggle" title="Toggle dark mode" aria-label="Toggle dark mode">🌙</button>
+      </div>
+    </header>
+
+    <div class="page-content">
+      <div class="page-header">
+        <h1>Welcome back, <span id="dash-user-name">—</span></h1>
+        <p>Here's what's happening in your store today.</p>
+      </div>
+
+      <!-- KPI Cards -->
+      <section class="dashboard-kpis" aria-label="Key performance indicators">
+        <div class="kpi-card">
+          <div class="kpi-icon blue" aria-hidden="true">💰</div>
+          <div class="kpi-content">
+            <div class="kpi-label">Total Sales</div>
+            <div class="kpi-value" id="kpi-total-sales">—</div>
+            <div class="kpi-sub">All time</div>
+          </div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-icon green" aria-hidden="true">📅</div>
+          <div class="kpi-content">
+            <div class="kpi-label">Today's Revenue</div>
+            <div class="kpi-value" id="kpi-today-revenue">—</div>
+            <div class="kpi-sub" id="kpi-today-txns">0 transactions</div>
+          </div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-icon amber" aria-hidden="true">🗓️</div>
+          <div class="kpi-content">
+            <div class="kpi-label">Monthly Revenue</div>
+            <div class="kpi-value" id="kpi-monthly-revenue">—</div>
+            <div class="kpi-sub" id="kpi-monthly-txns">0 transactions</div>
+          </div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-icon teal" aria-hidden="true">📦</div>
+          <div class="kpi-content">
+            <div class="kpi-label">Total Products</div>
+            <div class="kpi-value" id="kpi-total-products">—</div>
+            <div class="kpi-sub" id="kpi-low-stock-count">Loading...</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Lower Panels -->
+      <div class="dashboard-lower">
+        <!-- Low Stock Alerts -->
+        <section class="card" aria-labelledby="low-stock-heading">
+          <div class="card-header">
+            <h2 class="card-title" id="low-stock-heading">⚠️ Low Stock Alerts</h2>
+            <a href="profile.html#inventory" class="btn btn-secondary btn-sm">Manage</a>
+          </div>
+          <div class="stock-alerts" id="low-stock-list" aria-live="polite">
+            <div class="empty-state"><div class="empty-state-icon" aria-hidden="true">✅</div><div class="empty-state-title">All products are well-stocked</div></div>
+          </div>
+        </section>
+
+        <!-- Recent Activity -->
+        <section class="card" aria-labelledby="activity-heading">
+          <div class="card-header">
+            <h2 class="card-title" id="activity-heading">📋 Recent Activity</h2>
+            <button class="btn btn-secondary btn-sm" onclick="loadActivity()">Refresh</button>
+          </div>
+          <div class="activity-feed" id="activity-feed" aria-live="polite">
+            <div class="empty-state"><div class="empty-state-icon" aria-hidden="true">📋</div><div class="empty-state-title">No recent activity</div></div>
+          </div>
+        </section>
+      </div>
+    </div>
+  </main>
+</div>
+
+<div id="toast-container" class="toast-container" aria-live="polite"></div>
+
+<!-- Firebase SDK -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+
+<script src="../firebase/firebase-config.js"></script>
+<script src="../assets/js/utils.js"></script>
+<script src="../firebase/auth-manager.js"></script>
+<script src="../assets/js/app.js"></script>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  bootstrapApp({
+    pageId: 'nav-dashboard',
+    onReady: loadDashboard
+  });
+});
+
+async function loadDashboard(user) {
+  const name = user.fullName || user.displayName || user.email;
+  document.getElementById('dash-user-name').textContent = name.split(' ')[0] || name;
+
+  await Promise.all([loadKPIs(), loadLowStock(), loadActivity()]);
+}
+
+// ── KPIs ──────────────────────────────────────────────────────
+
+async function loadKPIs() {
+  try {
+    const salesData = await getAllSalesTransactions() || {};
+    const sales = Object.values(salesData);
+    const today = new Date(); today.setHours(0,0,0,0);
+    const monthStart = new Date(); monthStart.setDate(1); monthStart.setHours(0,0,0,0);
+
+    let totalRev = 0, todayRev = 0, todayTxns = 0, monthRev = 0, monthTxns = 0;
+    sales.forEach(s => {
+      if (!s.total) return;
+      totalRev += s.total;
+      const t = new Date(s.timestamp);
+      if (t >= today) { todayRev += s.total; todayTxns++; }
+      if (t >= monthStart) { monthRev += s.total; monthTxns++; }
+    });
+
+    document.getElementById('kpi-total-sales').textContent    = fc(totalRev);
+    document.getElementById('kpi-today-revenue').textContent  = fc(todayRev);
+    document.getElementById('kpi-today-txns').textContent     = todayTxns + ' transaction' + (todayTxns !== 1 ? 's' : '');
+    document.getElementById('kpi-monthly-revenue').textContent = fc(monthRev);
+    document.getElementById('kpi-monthly-txns').textContent   = monthTxns + ' transaction' + (monthTxns !== 1 ? 's' : '');
+
+    // Products
+    const products = await getAllProducts() || {};
+    const pList = Object.values(products).filter(p => !p.initialized);
+    const lowCount = pList.filter(p => p.quantity > 0 && p.quantity <= (p.minStock || 5)).length;
+    const outCount = pList.filter(p => p.quantity === 0).length;
+
+    document.getElementById('kpi-total-products').textContent = pList.length;
+    document.getElementById('kpi-low-stock-count').textContent = 
+      `${lowCount} low stock · ${outCount} out of stock`;
+  } catch (err) {
+    console.error('KPI load error:', err);
+    POSToast.error('Could not load KPI data.');
+  }
+}
+
+// ── Low Stock ─────────────────────────────────────────────────
+
+async function loadLowStock() {
+  const container = document.getElementById('low-stock-list');
+  try {
+    const products = await getAllProducts() || {};
+    const pList = Object.values(products).filter(p => !p.initialized);
+    const alerts = pList
+      .filter(p => p.quantity <= (p.minStock || 5))
+      .sort((a, b) => a.quantity - b.quantity)
+      .slice(0, 8);
+
+    if (!alerts.length) {
+      container.innerHTML = `<div class="empty-state"><div class="empty-state-icon" aria-hidden="true">✅</div><div class="empty-state-title">All products are well-stocked</div></div>`;
+      return;
+    }
+    container.innerHTML = alerts.map(p => {
+      const cls = p.quantity === 0 ? 'critical' : 'low';
+      const qty = p.quantity === 0 ? 'Out of Stock' : `${p.quantity} left`;
+      return `<div class="stock-alert-item ${cls}" role="listitem">
+        <div><div class="stock-name">${p.name}</div><div class="stock-qty ${cls}">${qty} (min: ${p.minStock || 5})</div></div>
+        <span class="badge ${p.quantity === 0 ? 'badge-danger' : 'badge-warning'}">${cls === 'critical' ? 'OUT' : 'LOW'}</span>
+      </div>`;
+    }).join('');
+  } catch (err) {
+    container.innerHTML = `<div class="empty-state"><div class="empty-state-text">Could not load alerts.</div></div>`;
+  }
+}
+
+// ── Activity ──────────────────────────────────────────────────
+
+async function loadActivity() {
+  const container = document.getElementById('activity-feed');
+  try {
+    const logs = await getActivityLogs(10);
+    if (!logs.length) {
+      container.innerHTML = `<div class="empty-state"><div class="empty-state-icon" aria-hidden="true">📋</div><div class="empty-state-title">No recent activity</div></div>`;
+      return;
+    }
+    const dotClass = { LOGIN:'login', LOGOUT:'login', COMPLETE_SALE:'sale', CREATE_PRODUCT:'product', DELETE_PRODUCT:'delete', UPDATE_PRODUCT:'product' };
+    container.innerHTML = logs.map(l => `
+      <div class="activity-item" role="listitem">
+        <div class="activity-dot ${dotClass[l.action] || ''}" aria-hidden="true"></div>
+        <div class="activity-text">
+          <div class="activity-action">${l.description || l.action}</div>
+          <div class="activity-time">${formatDateTime(l.timestamp)}</div>
+        </div>
+      </div>`).join('');
+  } catch (err) {
+    container.innerHTML = `<div class="empty-state"><div class="empty-state-text">Could not load activity.</div></div>`;
+  }
+}
+</script>
+</body>
+</html>

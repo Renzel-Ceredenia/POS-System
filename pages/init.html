@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Database Initialization – POS Professional</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/css/theme.css">
+  <link rel="stylesheet" href="../assets/css/base.css">
+  <link rel="stylesheet" href="../assets/css/components.css">
+  <style>
+    body { display:flex; align-items:center; justify-content:center; min-height:100vh; background:var(--clr-bg); }
+    .init-card { max-width:560px; width:100%; background:var(--clr-surface); border-radius:var(--radius-xl); box-shadow:var(--shadow-xl); padding:40px; text-align:center; }
+    .init-icon { font-size:3rem; margin-bottom:var(--gap-md); }
+    .init-card h1 { font-size:1.5rem; margin-bottom:var(--gap-sm); }
+    .init-card p { color:var(--clr-text-muted); margin-bottom:var(--gap-lg); }
+    .log { background:var(--clr-surface-2); border:1px solid var(--clr-border); border-radius:var(--radius-md); padding:var(--gap-md); text-align:left; font-family:var(--font-mono); font-size:.8rem; max-height:260px; overflow-y:auto; margin-top:var(--gap-md); }
+    .log-line { padding:2px 0; border-bottom:1px solid var(--clr-border); }
+    .log-line.ok  { color:var(--clr-success); }
+    .log-line.err { color:var(--clr-danger); }
+    .log-line.info { color:var(--clr-text-muted); }
+    .credentials { background:var(--clr-primary-light); border:1px solid var(--clr-primary); border-radius:var(--radius-md); padding:var(--gap-md); margin:var(--gap-md) 0; text-align:left; font-size:.875rem; }
+    .credentials strong { display:block; color:var(--clr-primary); margin-bottom:var(--gap-sm); }
+  </style>
+</head>
+<body>
+<div class="init-card">
+  <div class="init-icon" id="init-icon" aria-hidden="true">⚙️</div>
+  <h1>Database Initialization</h1>
+  <p>This will create the default database structure and admin account in Firebase. Run this only once.</p>
+
+  <div class="credentials" id="creds-box">
+    <strong>Default Admin Credentials</strong>
+    <div>Email: <code>admin@pos.local</code></div>
+    <div>Password: <code>Admin@2026!</code></div>
+    <div style="margin-top:var(--gap-sm);color:var(--clr-danger);font-size:.8rem;">⚠ Change this password immediately after first login.</div>
+  </div>
+
+  <button class="btn btn-primary btn-lg w-full" id="init-btn" onclick="runInit()">Initialize Database</button>
+  <div class="log" id="init-log" aria-live="polite"></div>
+  <div id="init-result" style="margin-top:var(--gap-md);"></div>
+</div>
+
+<div id="toast-container" class="toast-container" aria-live="polite"></div>
+
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+<script src="../firebase/firebase-config.js"></script>
+<script src="../assets/js/utils.js"></script>
+<script src="../firebase/init-database.js"></script>
+
+<script>
+const logEl = document.getElementById('init-log');
+const origConsole = { log: console.log, warn: console.warn, error: console.error };
+
+function captureLog(type, ...args) {
+  const msg = args.join(' ');
+  const line = document.createElement('div');
+  line.className = `log-line ${type === 'error' ? 'err' : type === 'warn' ? 'info' : 'ok'}`;
+  line.textContent = msg;
+  logEl.appendChild(line);
+  logEl.scrollTop = logEl.scrollHeight;
+  origConsole[type === 'warn' ? 'warn' : type === 'error' ? 'error' : 'log'](...args);
+}
+
+console.log   = (...a) => captureLog('log',   ...a);
+console.warn  = (...a) => captureLog('warn',  ...a);
+console.error = (...a) => captureLog('error', ...a);
+
+async function runInit() {
+  const btn = document.getElementById('init-btn');
+  btn.disabled = true;
+  btn.textContent = 'Initializing...';
+  document.getElementById('init-icon').textContent = '⏳';
+  logEl.innerHTML = '';
+
+  try {
+    const result = await initializeDatabase();
+    document.getElementById('init-icon').textContent = result.success ? '✅' : '❌';
+    document.getElementById('init-result').innerHTML = result.success
+      ? `<div style="color:var(--clr-success);font-weight:700;margin-bottom:var(--gap-md);">Initialization complete!</div>
+         <a href="login.html" class="btn btn-primary">Go to Login →</a>`
+      : `<div style="color:var(--clr-danger);">Initialization failed: ${result.error}</div>`;
+  } catch (err) {
+    document.getElementById('init-icon').textContent = '❌';
+    document.getElementById('init-result').innerHTML = `<div style="color:var(--clr-danger);">Error: ${err.message}</div>`;
+  }
+}
+</script>
+</body>
+</html>

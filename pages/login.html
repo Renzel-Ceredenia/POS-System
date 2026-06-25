@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign In – POS Professional</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/css/theme.css">
+  <link rel="stylesheet" href="../assets/css/base.css">
+  <link rel="stylesheet" href="../assets/css/components.css">
+  <link rel="stylesheet" href="../assets/css/login.css">
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
+
+<script src="../firebase/firebase-config.js"></script>
+</head>
+<body>
+<div class="login-page">
+
+  <!-- Left Panel -->
+  <div class="login-left" role="complementary" aria-label="Welcome information">
+    <div class="login-left-content">
+      <div class="login-brand">
+        <div class="login-brand-icon" aria-hidden="true">₱</div>
+        <div>
+          <div class="login-brand-name">POS Professional</div>
+          <div class="login-brand-sub">Enterprise Retail System</div>
+        </div>
+      </div>
+      <div class="login-hero-text">
+        <h2>Welcome Back to Your Retail Command Center</h2>
+        <p>Manage sales, inventory, and analytics — all in one place, powered by Firebase.</p>
+      </div>
+      <div class="login-features" role="list">
+        <div class="login-feature" role="listitem">
+          <div class="login-feature-icon" aria-hidden="true">⚡</div>
+          <div class="login-feature-text"><strong>Real-Time Sync</strong><span>Firebase Realtime Database</span></div>
+        </div>
+        <div class="login-feature" role="listitem">
+          <div class="login-feature-icon" aria-hidden="true">🔐</div>
+          <div class="login-feature-text"><strong>Secure Auth</strong><span>Firebase Email/Password</span></div>
+        </div>
+        <div class="login-feature" role="listitem">
+          <div class="login-feature-icon" aria-hidden="true">👥</div>
+          <div class="login-feature-text"><strong>Role-Based Access</strong><span>Admin · Manager · Cashier</span></div>
+        </div>
+        <div class="login-feature" role="listitem">
+          <div class="login-feature-icon" aria-hidden="true">📊</div>
+          <div class="login-feature-text"><strong>Smart Analytics</strong><span>Sales insights at a glance</span></div>
+        </div>
+      </div>
+    </div>
+    <div style="color:rgba(255,255,255,.4);font-size:.78rem;">© 2026 POS Professional</div>
+  </div>
+
+  <!-- Right Panel -->
+  <div class="login-right">
+    <div class="login-box">
+      <div class="login-box-header">
+        <h1>Sign In</h1>
+        <p>Enter your credentials to access the system</p>
+      </div>
+
+      <!-- First-login notice -->
+      <div class="first-login-banner" id="first-login-banner" role="alert">
+        <span aria-hidden="true">⚠</span>
+        <div><strong>First Login Detected</strong><br>Please change your password after signing in.</div>
+      </div>
+
+      <form class="login-form" id="login-form" novalidate aria-label="Login form">
+        <div class="form-group">
+          <label class="form-label" for="email">Email Address</label>
+          <input class="form-control" type="email" id="email" name="email" placeholder="admin@pos.local" autocomplete="email" required aria-required="true">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="password">Password</label>
+          <div class="password-toggle-wrap">
+            <input class="form-control" type="password" id="password" name="password" placeholder="••••••••" autocomplete="current-password" required aria-required="true">
+            <button type="button" class="toggle-password" id="toggle-pw" aria-label="Toggle password visibility">👁</button>
+          </div>
+        </div>
+
+        <div class="login-msg" id="login-msg" role="alert" aria-live="polite"></div>
+
+        <button type="submit" class="btn btn-primary w-full btn-lg" id="login-btn">Sign In</button>
+      </form>
+
+      <div class="login-footer">
+        <a href="../index.html">← Back to Home</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="toast-container" class="toast-container" aria-live="polite"></div>
+
+<!-- Firebase SDK -->
+<script src="../assets/js/utils.js"></script>
+<script src="../firebase/auth-manager.js"></script>
+
+<script>
+// ── Init ──────────────────────────────────────────────────────
+
+const loginForm = document.getElementById('login-form');
+const loginBtn  = document.getElementById('login-btn');
+const loginMsg  = document.getElementById('login-msg');
+const togglePw  = document.getElementById('toggle-pw');
+
+// If already logged in, redirect
+authManager.loadSession();
+if (authManager.isAuthenticated) {
+  window.location.href = 'dashboard.html';
+}
+
+// ── Password Toggle ───────────────────────────────────────────
+
+togglePw.addEventListener('click', () => {
+  const pw = document.getElementById('password');
+  pw.type = pw.type === 'password' ? 'text' : 'password';
+  togglePw.textContent = pw.type === 'password' ? '👁' : '🙈';
+});
+
+// ── Login Handler ─────────────────────────────────────────────
+
+loginForm.addEventListener('submit', async (e) => {
+  e.preventDefault();
+
+  const email    = document.getElementById('email').value.trim();
+  const password = document.getElementById('password').value;
+
+  loginMsg.textContent = '';
+  loginMsg.className = 'login-msg';
+
+  if (!email || !password) {
+    showLoginMsg('Please enter your email and password.', 'error');
+    return;
+  }
+
+  setLoading(loginBtn, true, 'Signing in...');
+
+  try {
+    const result = await authManager.login(email, password);
+
+    if (result.success) {
+      if (result.firstLogin) {
+        document.getElementById('first-login-banner').classList.add('show');
+        showLoginMsg('First login detected. Redirecting to change password...', 'success');
+        setTimeout(() => window.location.href = 'dashboard.html', 1800);
+      } else {
+        showLoginMsg('Login successful! Redirecting...', 'success');
+        setTimeout(() => window.location.href = 'dashboard.html', 800);
+      }
+    } else {
+      showLoginMsg(result.error || 'Login failed. Please try again.', 'error');
+      setLoading(loginBtn, false);
+    }
+  } catch (err) {
+    showLoginMsg('An unexpected error occurred. Please try again.', 'error');
+    setLoading(loginBtn, false);
+    console.error('Login error:', err);
+  }
+});
+
+function showLoginMsg(msg, type) {
+  loginMsg.textContent = msg;
+  loginMsg.className = `login-msg ${type}`;
+}
+
+// ── Helpers from utils.js ─────────────────────────────────────
+
+function setLoading(el, loading, text) {
+  if (loading) {
+    el._orig = el.textContent;
+    el.disabled = true;
+    el.textContent = text || 'Loading...';
+  } else {
+    el.disabled = false;
+    el.textContent = el._orig || 'Sign In';
+  }
+}
+</script>
+</body>
+</html>

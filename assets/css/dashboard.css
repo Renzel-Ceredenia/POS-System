@@ -1,0 +1,58 @@
+/* =============================================================
+   POS Professional – Dashboard Page
+   ============================================================= */
+
+.dashboard-kpis {
+  display: grid; grid-template-columns: repeat(4, 1fr);
+  gap: var(--gap-md); margin-bottom: var(--gap-xl);
+}
+.dashboard-lower { display: grid; grid-template-columns: 1fr 1fr; gap: var(--gap-lg); }
+
+/* ── Activity Feed ───────────────────────────────────────── */
+.activity-feed { display: flex; flex-direction: column; gap: 0; }
+.activity-item {
+  display: flex; align-items: flex-start; gap: var(--gap-md);
+  padding: var(--gap-md) 0; border-bottom: 1px solid var(--clr-border);
+}
+.activity-item:last-child { border-bottom: none; }
+.activity-dot {
+  width: 10px; height: 10px; border-radius: 50%; margin-top: 5px;
+  background: var(--clr-primary); flex-shrink: 0;
+}
+.activity-dot.sale    { background: var(--clr-success); }
+.activity-dot.login   { background: var(--clr-info); }
+.activity-dot.product { background: var(--clr-warning); }
+.activity-dot.delete  { background: var(--clr-danger); }
+.activity-text { flex: 1; }
+.activity-action { font-size: .875rem; font-weight: 500; }
+.activity-time  { font-size: .75rem; color: var(--clr-text-muted); margin-top: 2px; }
+
+/* ── Low Stock Alerts ────────────────────────────────────── */
+.stock-alerts { display: flex; flex-direction: column; gap: var(--gap-sm); }
+.stock-alert-item {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: var(--gap-sm) var(--gap-md); border-radius: var(--radius-md);
+  border: 1px solid var(--clr-border); font-size: .875rem;
+  background: var(--clr-surface);
+}
+.stock-alert-item.critical {
+  border-color: var(--clr-danger); background: var(--clr-danger-light);
+}
+.stock-alert-item.low {
+  border-color: var(--clr-warning); background: var(--clr-warning-light);
+}
+.stock-name { font-weight: 600; }
+.stock-qty  { font-size: .8rem; color: var(--clr-text-muted); }
+.stock-qty.critical { color: var(--clr-danger); font-weight: 700; }
+.stock-qty.low { color: var(--clr-warning); font-weight: 700; }
+
+@media (max-width: 1200px) {
+  .dashboard-kpis { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 768px) {
+  .dashboard-kpis { grid-template-columns: 1fr 1fr; }
+  .dashboard-lower { grid-template-columns: 1fr; }
+}
+@media (max-width: 480px) {
+  .dashboard-kpis { grid-template-columns: 1fr; }
+}

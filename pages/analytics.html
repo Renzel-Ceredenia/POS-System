@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Analytics – POS Professional</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/css/theme.css">
+  <link rel="stylesheet" href="../assets/css/base.css">
+  <link rel="stylesheet" href="../assets/css/components.css">
+  <link rel="stylesheet" href="../assets/css/layout.css">
+  <link rel="stylesheet" href="../assets/css/analytics.css">
+</head>
+<body>
+<div class="app-shell">
+  <!-- Sidebar -->
+  <aside class="sidebar" role="navigation" aria-label="Main navigation">
+    <div class="sidebar-logo">
+      <div class="sidebar-logo-icon" aria-hidden="true">₱</div>
+      <div class="sidebar-logo-text"><span>POS Professional</span><small>Enterprise POS</small></div>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="sidebar-nav-section">
+        <div class="sidebar-nav-label">Main</div>
+        <a href="dashboard.html" class="nav-item" id="nav-dashboard"><span class="nav-icon" aria-hidden="true">📊</span> Dashboard</a>
+        <a href="sales.html" class="nav-item" id="nav-sales"><span class="nav-icon" aria-hidden="true">🛒</span> Sales / POS</a>
+        <a href="analytics.html" class="nav-item active" id="nav-analytics" aria-current="page"><span class="nav-icon" aria-hidden="true">📈</span> Analytics</a>
+      </div>
+      <div class="sidebar-nav-section">
+        <div class="sidebar-nav-label">Account</div>
+        <a href="profile.html" class="nav-item" id="nav-profile"><span class="nav-icon" aria-hidden="true">👤</span> Profile</a>
+        <a href="settings.html" class="nav-item" id="nav-settings"><span class="nav-icon" aria-hidden="true">⚙️</span> Settings</a>
+      </div>
+    </nav>
+    <div class="sidebar-user">
+      <div class="sidebar-avatar" id="sidebar-user-initials" aria-hidden="true">U</div>
+      <div class="sidebar-user-info">
+        <div class="sidebar-user-name" id="sidebar-user-name">Loading...</div>
+        <div class="sidebar-user-role" id="sidebar-user-role">—</div>
+      </div>
+      <button class="sidebar-logout-btn" onclick="handleLogout()" title="Logout" aria-label="Logout">🚪</button>
+    </div>
+  </aside>
+  <div class="sidebar-overlay"></div>
+
+  <main class="main-content" role="main">
+    <header class="topbar">
+      <div class="topbar-left">
+        <button class="menu-toggle" aria-label="Toggle sidebar">☰</button>
+        <h1 class="topbar-title">Analytics</h1>
+      </div>
+      <div class="topbar-right">
+        <span class="topbar-time" id="topbar-time" aria-live="off"></span>
+        <button class="btn btn-secondary btn-sm" onclick="exportTransactionsCSV()">⬇ Export CSV</button>
+        <button class="btn btn-ghost btn-icon" id="theme-toggle" aria-label="Toggle dark mode">🌙</button>
+      </div>
+    </header>
+
+    <div class="page-content">
+      <div class="page-header">
+        <h1>Sales Analytics</h1>
+        <p>Comprehensive sales reports, revenue trends, and inventory insights.</p>
+      </div>
+
+      <!-- Overall KPIs -->
+      <div class="analytics-kpis" aria-label="Sales overview">
+        <div class="kpi-card"><div class="kpi-icon blue" aria-hidden="true">💰</div><div class="kpi-content"><div class="kpi-label">Total Revenue</div><div class="kpi-value" id="an-total-rev">—</div><div class="kpi-sub">All time</div></div></div>
+        <div class="kpi-card"><div class="kpi-icon green" aria-hidden="true">🧾</div><div class="kpi-content"><div class="kpi-label">Transactions</div><div class="kpi-value" id="an-total-txns">—</div><div class="kpi-sub">Total count</div></div></div>
+        <div class="kpi-card"><div class="kpi-icon amber" aria-hidden="true">📦</div><div class="kpi-content"><div class="kpi-label">Items Sold</div><div class="kpi-value" id="an-items-sold">—</div><div class="kpi-sub">Total units</div></div></div>
+        <div class="kpi-card"><div class="kpi-icon teal" aria-hidden="true">💵</div><div class="kpi-content"><div class="kpi-label">Avg. Transaction</div><div class="kpi-value" id="an-avg-txn">—</div><div class="kpi-sub">Per sale</div></div></div>
+      </div>
+
+      <!-- Tabs -->
+      <div class="section card" style="margin-bottom:var(--gap-lg);">
+        <div class="tabs" role="tablist" aria-label="Analytics period">
+          <button class="tab-btn active" data-tab="daily"   role="tab" aria-selected="true"  onclick="switchTab('daily',this)">Daily</button>
+          <button class="tab-btn"         data-tab="weekly"  role="tab" aria-selected="false" onclick="switchTab('weekly',this)">Weekly</button>
+          <button class="tab-btn"         data-tab="monthly" role="tab" aria-selected="false" onclick="switchTab('monthly',this)">Monthly</button>
+          <button class="tab-btn"         data-tab="yearly"  role="tab" aria-selected="false" onclick="switchTab('yearly',this)">Yearly</button>
+        </div>
+
+        <!-- Daily -->
+        <div class="tab-panel active" id="tab-daily" role="tabpanel">
+          <div class="analytics-controls">
+            <div class="date-range"><label for="daily-date" style="font-weight:600;">Date:</label>
+            <input class="form-control" type="date" id="daily-date" onchange="updateDailyTab()" style="width:auto;"></div>
+          </div>
+          <div class="analytics-row">
+            <div><h3 class="section-title">Summary</h3><div id="daily-summary" class="summary-list"></div></div>
+            <div><h3 class="section-title">Top Products</h3><div id="daily-top-products" class="top-products-list"></div></div>
+          </div>
+          <div><h3 class="section-title" style="margin-bottom:var(--gap-md);">Hourly Sales</h3><div class="bar-chart" id="daily-chart"></div></div>
+        </div>
+
+        <!-- Weekly -->
+        <div class="tab-panel" id="tab-weekly" role="tabpanel">
+          <div class="analytics-controls">
+            <div class="date-range"><label for="weekly-date" style="font-weight:600;">Week of:</label>
+            <input class="form-control" type="date" id="weekly-date" onchange="updateWeeklyTab()" style="width:auto;"></div>
+          </div>
+          <div class="analytics-row">
+            <div><h3 class="section-title">Summary</h3><div id="weekly-summary" class="summary-list"></div></div>
+            <div><h3 class="section-title">Daily Breakdown</h3><div class="bar-chart" id="weekly-chart"></div></div>
+          </div>
+        </div>
+
+        <!-- Monthly -->
+        <div class="tab-panel" id="tab-monthly" role="tabpanel">
+          <div class="analytics-controls">
+            <div class="date-range"><label for="monthly-date" style="font-weight:600;">Month:</label>
+            <input class="form-control" type="month" id="monthly-date" onchange="updateMonthlyTab()" style="width:auto;"></div>
+          </div>
+          <div class="analytics-row">
+            <div><h3 class="section-title">Summary</h3><div id="monthly-summary" class="summary-list"></div></div>
+            <div><h3 class="section-title">Best Sellers</h3><div id="monthly-top" class="top-products-list"></div></div>
+          </div>
+        </div>
+
+        <!-- Yearly -->
+        <div class="tab-panel" id="tab-yearly" role="tabpanel">
+          <div class="analytics-controls">
+            <div class="date-range"><label for="yearly-date" style="font-weight:600;">Year:</label>
+            <input class="form-control" type="number" id="yearly-date" min="2020" max="2099" onchange="updateYearlyTab()" style="width:auto;"></div>
+          </div>
+          <div class="analytics-row">
+            <div><h3 class="section-title">Annual Summary</h3><div id="yearly-summary" class="summary-list"></div></div>
+            <div><h3 class="section-title">Monthly Performance</h3><div class="bar-chart" id="yearly-chart"></div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Inventory Analytics -->
+      <div class="section card" style="margin-bottom:var(--gap-lg);">
+        <div class="card-header">
+          <h2 class="card-title">📦 Inventory Performance</h2>
+          <button class="btn btn-secondary btn-sm" onclick="loadInventoryAnalytics()">Refresh</button>
+        </div>
+        <div class="inventory-grid" aria-label="Inventory metrics">
+          <div class="inv-metric"><div class="inv-metric-num" id="inv-total">—</div><div class="inv-metric-label">Total Products</div></div>
+          <div class="inv-metric" style="border-color:var(--clr-warning);"><div class="inv-metric-num" style="color:var(--clr-warning);" id="inv-low">—</div><div class="inv-metric-label">Low Stock</div></div>
+          <div class="inv-metric" style="border-color:var(--clr-danger);"><div class="inv-metric-num" style="color:var(--clr-danger);" id="inv-out">—</div><div class="inv-metric-label">Out of Stock</div></div>
+        </div>
+        <div style="margin-top:var(--gap-md);"><h3 class="section-title" style="margin-bottom:var(--gap-md);">Inventory Value</h3>
+          <div id="inv-value-display" class="kpi-value" style="font-size:2rem;">—</div>
+        </div>
+      </div>
+
+      <!-- All Transactions -->
+      <div class="section card">
+        <div class="card-header"><h2 class="card-title">All Transactions</h2></div>
+        <div class="table-wrapper">
+          <table class="table" aria-label="All transactions">
+            <thead><tr><th>Date/Time</th><th>Items</th><th>Subtotal</th><th>Discount</th><th>Total</th><th>Payment</th><th>Cashier</th></tr></thead>
+            <tbody id="all-txn-tbody"><tr><td colspan="7" class="text-center text-muted" style="padding:var(--gap-lg);">Loading...</td></tr></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<div id="toast-container" class="toast-container" aria-live="polite"></div>
+
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+<script src="../firebase/firebase-config.js"></script>
+<script src="../assets/js/utils.js"></script>
+<script src="../firebase/auth-manager.js"></script>
+<script src="../assets/js/app.js"></script>
+<script src="../assets/js/analytics.js"></script>
+</body>
+</html>
